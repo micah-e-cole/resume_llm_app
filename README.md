@@ -54,7 +54,7 @@ brew install pandoc
 
 ## Prepare your resume + focus areas
 
-In the `resumes/` folder, create one JSON file **per focus area**, named:
+In the `resumes/` folder, create one JSON file **per focus area**, named (for example, but you can edit the names to be whatever the targets your are using):
 ```
 it_resume.json
 software_development_resume.json
@@ -69,7 +69,7 @@ resumes/software_development_resume.json
 resumes/security_resume.json
 ```
 
-✅ These are the files the app will load automatically when you select the Focus Area dropdown.
+These are the files the app will load automatically when you select the Focus Area dropdown.
 
 ---
 
