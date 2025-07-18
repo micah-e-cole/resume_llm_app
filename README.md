@@ -42,6 +42,7 @@ Visit [http://localhost:8501](http://localhost:8501) in your browser.
 ## How to customize
 - See `CheatSheet.md` for model, prompt, template, and Pandoc tips.
 - Edit `resume_template.md` for Markdown layout.
+- Copy resume_sample.json to resume.json and fill in your personal data locally.
 - Add or update example `resume.json`.
 
 ## Outputs

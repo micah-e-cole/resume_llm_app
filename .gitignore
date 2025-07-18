@@ -1,0 +1,7 @@
+# Ignore resume data (keep the resume private)
+resume.json
+
+# Ignore virtual environment
+venv/
+# Ignore output files
+output/
