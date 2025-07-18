@@ -1,7 +1,6 @@
 import streamlit as st
 import json
 import requests
-import subprocess
 import os
 from jinja2 import Environment, FileSystemLoader
 import pypandoc
@@ -14,28 +13,45 @@ os.makedirs('output', exist_ok=True)
 # ---- STREAMLIT APP ----
 st.title("Resume Tailoring App with LLM + Pandoc")
 
-st.markdown("Upload your resume JSON and paste a job description. This app will tailor your resume using a local LLM (Ollama) and generate updated PDF and DOCX files.")
+st.markdown("Select a resume focus area, paste a job description, and this app will tailor your resume using a local LLM (Ollama) and generate updated PDF and DOCX files.")
 
-# Input fields
+# ---- Input fields ----
+focus_area = st.selectbox(
+    "Select Resume Focus Area",
+    ["IT", "Software Development", "Security"]
+)
+
 organization = st.text_input("Organization Name (e.g., Google)")
 job_title = st.text_input("Job Title (e.g., Software Engineer)")
 job_desc = st.text_area("Paste Job Description", height=300)
-resume_file = st.file_uploader("Upload Resume JSON", type=["json"])
-sections_to_update = st.multiselect("Select sections to rewrite", ["summary", "skills", "experience"], default=["summary", "skills", "experience"])
+
+sections_to_update = st.multiselect(
+    "Select sections to rewrite",
+    ["summary", "skills", "experience"],
+    default=["summary", "skills", "experience"]
+)
 
 if st.button("Generate Updated Resume"):
-    if job_desc and resume_file and organization and job_title:
-        # ---- LOAD RESUME ----
-        resume_data = json.load(resume_file)
+    if job_desc and organization and job_title:
+        # ---- LOAD RESUME BASED ON FOCUS AREA ----
+        resume_file_path = f"resumes/{focus_area.lower().replace(' ', '_')}_resume.json"
+        try:
+            with open(resume_file_path) as f:
+                resume_data = json.load(f)
+        except FileNotFoundError:
+            st.error(f"Resume file not found: {resume_file_path}")
+            st.stop()
+
         first_name = resume_data.get('name', 'First Last').split()[0]
         last_name = resume_data.get('name', 'First Last').split()[-1]
         safe_org = organization.replace(' ', '_')
         safe_job = job_title.replace(' ', '_')
-        safe_name = f"{first_name}_{last_name}_{safe_job}"
+        safe_focus = focus_area.replace(' ', '')
+        safe_name = f"{first_name}_{last_name}_{safe_focus}_{safe_job}"
         org_folder = os.path.join('output', safe_org)
         os.makedirs(org_folder, exist_ok=True)
 
-        # ---- BUILD PROMPT ----
+        # ---- BUILD LLM PROMPT ----
         prompt = f"""
         You are a resume assistant.
         Here is my resume (in JSON): {resume_data}
@@ -49,7 +65,7 @@ if st.button("Generate Updated Resume"):
             response = requests.post(
                 'http://localhost:11434/api/generate',
                 json={'model': 'llama3:8b', 'prompt': prompt},
-                timeout=120  # increase if needed
+                timeout=120
             )
             response.raise_for_status()
             updated_json = json.loads(response.json()['response'])
@@ -77,12 +93,12 @@ if st.button("Generate Updated Resume"):
         # ---- CONVERT TO PDF AND DOCX USING PANDOC ----
         pdf_path = os.path.join(org_folder, f"{safe_name}.pdf")
         docx_path = os.path.join(org_folder, f"{safe_name}.docx")
-        
+
         pypandoc.convert_file(md_path, 'pdf', outputfile=pdf_path)
         pypandoc.convert_file(md_path, 'docx', outputfile=docx_path)
 
         # ---- SHOW DOWNLOAD BUTTONS ----
-        st.success(f"Files saved to {org_folder}")
+        st.success(f"✅ Files saved to {org_folder}")
         with open(pdf_path, 'rb') as f:
             st.download_button("📥 Download PDF", f, file_name=f"{safe_name}.pdf")
         with open(docx_path, 'rb') as f:
@@ -95,4 +111,5 @@ if st.button("Generate Updated Resume"):
         st.markdown("- To change prompt style, edit the `prompt` string.")
         st.markdown("- To adjust Markdown-to-PDF style, edit the `resume_template.md` file or pass a custom reference DOCX to Pandoc.")
     else:
-        st.warning("Please fill in all fields and upload resume JSON.")
+        st.warning("⚠️ Please fill in all fields.")
+# ---- END OF STREAMLIT APP ----
