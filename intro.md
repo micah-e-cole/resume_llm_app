@@ -1,5 +1,5 @@
 
-# 📦 **roject Folder Architecture (with Organization + Filename Naming)**
+# **Project Folder Architecture (with Organization + Filename Naming)**
 
 ```
 resume_project/
