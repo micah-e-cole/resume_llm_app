@@ -1,10 +1,10 @@
 ### CheatSheet.md
 
-````markdown
 # Streamlit + LLM Resume App Cheat Sheet
 
 ## Change Model
 In `render_resume.py`:
+
 ```python
 json={'model': 'llama3:8b', 'prompt': prompt}
 ```
@@ -14,6 +14,7 @@ Replace `'llama3:8b'` with `'mistral:7b'`, `'nous-hermes-2-mixtral'`, etc.
 
 ## Edit LLM Prompt
 In `render_resume.py`:
+
 ```python
 prompt = f"""
 You are a resume assistant.
