@@ -1,0 +1,26 @@
+{
+  "name": "Micah Braun",
+  "summary": "Experienced developer with a passion for automation, LLM integration, and building innovative solutions.",
+  "skills": ["Python", "Docker", "Streamlit", "Ollama", "Jinja2"],
+  "work_experience": [
+    {
+      "title": "Software Engineer",
+      "company": "Tech Corp",
+      "years": "2022–2024",
+      "description": "Built automation pipelines and integrated local LLMs for document generation projects."
+    },
+    {
+      "title": "Data Analyst",
+      "company": "Data Inc.",
+      "years": "2020–2022",
+      "description": "Analyzed large datasets and created dynamic reports to support business decisions."
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Sc. in Computer Science",
+      "institution": "Example University",
+      "years": "2016–2020"
+    }
+  ]
+}
