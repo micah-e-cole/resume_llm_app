@@ -1,0 +1,35 @@
+{
+  "name": "John Doe",
+  "summary": "Experienced developer with a passion for automation, LLM integration, and building innovative solutions.",
+  "skills": ["Skill1", "Skill2", "Skill3", "Skill4", "Skill5"],
+  "work_experience": [
+    {
+      "title": "Experience Title I",
+      "company": "Company Name 1",
+      "years": "2022–2024",
+      "description": [
+        "Bullet description1 for job 1",
+        "Bullet description2 for job 1",
+        "Bullet description3 for job 1"
+      ]
+
+    },
+    {
+      "title": "Experience Title II",
+      "company": "Company Name 2",
+      "years": "2020–2022",
+      "description": [
+        "Bullet description1 for job 2",
+        "Bullet description2 for job 2",
+        "Bullet description3 for job 2"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Sc. in Some Study",
+      "institution": "Example University",
+      "years": "2016–2020"
+    }
+  ]
+}
