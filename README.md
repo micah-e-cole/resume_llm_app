@@ -46,7 +46,7 @@ pip install -r requirements.txt
 brew install pandoc
 ```
 
-5. Install Ollama (Mac M2 recommended):
+5. Install Ollama (you will need to install according to your device(s) own requirements and bear in mind that not all GPUs are compatible with Ollama currently):
 - Download from https://ollama.ai/download
 - Run `ollama serve` in one terminal window
 
