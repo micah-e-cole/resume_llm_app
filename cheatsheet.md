@@ -1,5 +1,3 @@
-### CheatSheet.md
-
 # Streamlit + LLM Resume App Cheat Sheet
 
 ## Change Model
