@@ -54,4 +54,3 @@ output/<Organization>/<First_Last_JobTitle>.docx
 
 ## Credits
 Built with ChatGPT, Streamlit, Ollama, Pandoc, and Jinja2.
-````
