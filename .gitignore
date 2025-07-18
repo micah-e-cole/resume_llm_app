@@ -6,3 +6,7 @@ intro.md
 venv/
 # Ignore output files
 output/
+# Ignore resume folder -- for internal only
+resume/
+# Ignore Python cache files
+__pycache__/
