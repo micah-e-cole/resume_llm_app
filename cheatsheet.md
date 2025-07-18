@@ -1,9 +1,9 @@
 ### CheatSheet.md
 
 ````markdown
-# 🛠️ Streamlit + LLM Resume App Cheat Sheet
+# Streamlit + LLM Resume App Cheat Sheet
 
-## 🔧 Change Model
+## Change Model
 In `render_resume.py`:
 ```python
 json={'model': 'llama3:8b', 'prompt': prompt}
@@ -12,7 +12,7 @@ Replace `'llama3:8b'` with `'mistral:7b'`, `'nous-hermes-2-mixtral'`, etc.
 
 ---
 
-## 📝 Edit LLM Prompt
+## Edit LLM Prompt
 In `render_resume.py`:
 ```python
 prompt = f"""
@@ -27,7 +27,7 @@ Change wording to guide style or focus (e.g., "rewrite summary in active voice")
 
 ---
 
-## 🖌️ Customize Resume Layout
+## Customize Resume Layout
 In `resume_template.md`:
 - Change headers (`#`, `##`, `###`)
 - Add bold (`**text**`), italics (`*text*`), or horizontal lines (`---`)
@@ -35,7 +35,7 @@ In `resume_template.md`:
 
 ---
 
-## 📄 Customize Pandoc Output
+## Customize Pandoc Output
 In `render_resume.py`:
 ```python
 pypandoc.convert_file(md_path, 'docx', outputfile=docx_path)
@@ -48,7 +48,7 @@ Ask me if you want a LaTeX template for fancy PDFs!
 
 ---
 
-## 🗂️ Where Files Are Saved
+## Where Files Are Saved
 - Folder: `output/<Organization>/`
 - Filenames: `<First_Last_JobTitle>.md`, `.pdf`, `.docx`
 
@@ -59,9 +59,8 @@ output/Google/Micah_Braun_SoftwareEngineer.pdf
 
 ---
 
-## 💡 Tips
-✅ Stick to quantized models on Mac M2 (e.g., `llama3:8b.q4_K_M`)  
-✅ Monitor system memory if running large tasks  
-✅ Use Activity Monitor to watch performance
+## Tips 
+1. Monitor system memory if running large tasks  
+3. Use Activity Monitor (macOS), Task Manager (Windows), or top (Linux) to watch performance
 
 ````

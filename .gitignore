@@ -1,6 +1,7 @@
 # Ignore resume data (keep the resume private)
 resume.json
-
+# Ignore intro.md -- for internal only
+intro.md
 # Ignore virtual environment
 venv/
 # Ignore output files
