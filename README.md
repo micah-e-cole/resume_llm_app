@@ -6,7 +6,7 @@ This project is a Streamlit web app that:
 - Generates updated resumes in PDF and DOCX formats using Pandoc
 
 ## Setup
-0. File setup 
+### Folder Structure
 ```resume_project/
 ├── render_resume.py                  # Main Streamlit app script
 ├── resume_template.md                # Jinja2 Markdown template for rendering resumes
