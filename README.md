@@ -88,8 +88,8 @@ Visit [http://localhost:8501](http://localhost:8501) in your browser.
 ## Outputs
 Generated files are saved to:
 ```
-output/<Organization>/<First_Last_JobTitle>.pdf
-output/<Organization>/<First_Last_JobTitle>.docx
+output/<Organization>/<First_Last_FocusArea_JobTitle>.pdf
+output/<Organization>/<First_Last_FocusArea_JobTitle>.docx
 ```
 
 ## Credits
