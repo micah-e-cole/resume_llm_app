@@ -41,7 +41,7 @@ def extract_json_from_text(text):
 def check_pandoc_engine():
     """Check if pdflatex is available for PDF conversion"""
     if not shutil.which('pdflatex'):
-        st.warning("⚠️ 'pdflatex' not found. PDF export will fail. Install TeXLive or use --pdf-engine.")
+        st.warning("'pdflatex' not found. PDF export will fail. Install TeXLive or use --pdf-engine.")
         return False
     return True
 
@@ -127,7 +127,7 @@ if st.button("Generate Updated Resume"):
         updated_json = extract_json_from_text(full_response_text)
 
     except Exception as e:
-        st.error(f"❌ LLM call failed: {e}")
+        st.error(f"LLM call failed: {e}")
         st.stop()
 
     # Merge sections
@@ -166,13 +166,13 @@ if st.button("Generate Updated Resume"):
         try:
             pypandoc.convert_file(md_path, 'pdf', outputfile=pdf_path)
         except Exception as e:
-            st.warning(f"⚠️ PDF conversion failed: {e}")
+            st.warning(f"PDF conversion failed: {e}")
     try:
         pypandoc.convert_file(md_path, 'docx', outputfile=docx_path)
     except Exception as e:
-        st.warning(f"⚠️ DOCX conversion failed: {e}")
+        st.warning(f"DOCX conversion failed: {e}")
 
-    st.success(f"✅ Files saved to `{org_folder}`")
+    st.success(f"Files saved to `{org_folder}`")
 
     # Download buttons
     if os.path.exists(pdf_path):
