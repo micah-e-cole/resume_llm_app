@@ -16,3 +16,5 @@ __pycache__/
 Makefile
 # Ignore Streamlit cache files
 .streamlit/
+# Ignore Personal JSON
+personal_info.json
