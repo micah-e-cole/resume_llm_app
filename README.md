@@ -17,7 +17,6 @@ This project is a Streamlit web app that:
 │   ├── it_resume.json                # Base resume for IT roles
 │   ├── software_development_resume.json  # Base resume for Software Development roles
 │   └── security_resume.json          # Base resume for Security roles
-├── cheatSheet.md                     # Tips on customizing models, prompts, templates, etc.
 └── output/                           # Folder where generated files are saved
     └── <Organization>/               # Folder for each organization/job application (e.g., Google)
         ├── First_Last_FocusArea_JobTitle.md    # Rendered Markdown resume
