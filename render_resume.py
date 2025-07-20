@@ -2,12 +2,15 @@
 '''
 Author: Micah Braun
 Date: 2025-07-19
-Version: 2.0
+Version: 1.0
 
 Description:
-Streamlit app to tailor resumes using a local LLM server (Ollama-compatible),
-robustly handling streaming JSON responses and protecting fixed personal sections.
+Streamlit app to tailor resumes using a local LLM server (Ollama: llama3:8b),
+handling streaming JSON responses and protecting fixed personal sections.
 Outputs are saved as Markdown, PDF, and DOCX.
+
+Known Issues:
+- PDF conversion requires pdflatex installed - currently not working on tests
 '''
 
 import streamlit as st
@@ -57,11 +60,14 @@ st.markdown("Paste a job description, select sections to update, and generate a 
             "**Personal details and fixed sections are protected from LLM exposure.**")
 
 # ---- Input fields ----
-
+# Select focus area and input job details - these can be customized based on your own needs
+# If you make changes here, ensure they are reflected in the resume templates and personal_info.json
 focus_area = st.selectbox("Select Resume Focus Area", ["IT", "Software Development", "Security"])
 organization = st.text_input("Organization Name", value="")
 job_title = st.text_input("Job Title", value="")
 job_desc = st.text_area("Paste Job Description", height=300, value="")
+# Select sections to update - this can be customized based on your own needs
+# If you make changes here, ensure they are reflected in the resume templates/.json files
 sections_to_update = st.multiselect(
     "Select sections to rewrite",
     ["summary", "skills", "experience", "projects", "technical-tools", "strengths"],
