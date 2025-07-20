@@ -13,6 +13,7 @@ This project is a Streamlit web app that:
 ├── requirements.txt                  # Python dependencies
 ├── README.md                         # Project README for GitHub
 ├── my-reference.docx                 # Reference template for .docx file types (customize font/styles)
+├── styles.json                       # Style formatting to be used by Python's python-docx
 ├── Makefile (optional)               # Optional CLI helper for common commands
 ├── resumes/                          # Folder holding base resumes for each focus area (customize)
 │   ├── it_resume.json                    # Base resumes for IT roles
