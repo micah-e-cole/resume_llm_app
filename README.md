@@ -7,7 +7,8 @@ This project is a Streamlit web app that:
 
 ## Setup
 ### Folder Structure
-```resume_project/
+```
+resume_project/
 ├── main.py                           # Main Streamlit app script
 ├── file_utils.py                     # Contains helper functions for handling text functions in main.py
 ├── llm_client.py                     # Contains the helper functions for interacting with and prompting the LLM
