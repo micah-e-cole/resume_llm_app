@@ -1,6 +1,8 @@
 # Configuring The Model
 ---
-To test out the model once all of the dependencies have been installed, from one terminal run this command in the repository root folder:
+
+## Start the App
+To test out the model once all of the dependencies have been installed, from the terminal run this command in the repository root folder:
 ```
 ollama serve
 ```
@@ -33,20 +35,13 @@ resumes/software_development_resume.json
 resumes/security_resume.json
 ```
 
-These are the files the app will load automatically when you select the Focus Area dropdown.
+These are the files the app will load automatically when you select the Focus Area dropdown and load that specific resume template with the information you have placed there.
 
 ---
 
-## Run the app
-```bash
-streamlit run render_resume.py
-```
-Visit [http://localhost:8501](http://localhost:8501) in your browser.
-
 ## How to customize
-- See `CheatSheet.md` for model, prompt, template, and Pandoc tips.
-- Edit `resume_template.md` for Markdown layout.
-- Copy resume_sample.json to resume.json and fill in your personal data locally.
+- Edit the files in `resumes\` to adjust the Markdown layout.
+- Copy `resume_sample.json` to get a template and fill in your personal data locally.
 - Add or update example `resume.json`.
 
 ## Outputs
