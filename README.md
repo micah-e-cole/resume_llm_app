@@ -9,10 +9,10 @@ This project is a Streamlit web app that:
 ### Folder Structure
 ```resume_project/
 ├── main.py                           # Main Streamlit app script
-├── file_utils.py                     # Main Streamlit app script
-├── llm_client.py                     # Main Streamlit app script
-├── constants.py                      # Main Streamlit app script
-├── styler.py                         # Main Streamlit app script
+├── file_utils.py                     # Contains helper functions for handling text functions in main.py
+├── llm_client.py                     # Contains the helper functions for interacting with and prompting the LLM
+├── constants.py                      # Contains the constants used throughout the files
+├── styler.py                         # Contains the .DOCX file formatting that Pandoc will use in .DOCX conversion
 ├── resume_template.md                # Jinja2 Markdown template for rendering resumes
 ├── requirements.txt                  # Python dependencies
 ├── README.md                         # Project README for GitHub
@@ -29,7 +29,17 @@ This project is a Streamlit web app that:
         ├── First_Last_FocusArea_JobTitle.pdf   # Generated PDF resume
         └── First_Last_FocusArea_JobTitle.docx  # Generated DOCX resume
 ```
-1. Clone this repo and navigate into the folder:
+### Technical Requirements
+- Python Environment 3.8 - 3.12 recommended (this was written with 3.11.5)
+- Python packages (required packages can be found in the requirements.txt file)
+- Local LLM backend: Ollama server running locally on port 11434 (model: llama3:8b)
+- Pandoc
+- If using macOS: pdflatex for .PDF conversion with Pandoc
+- At the time of writing, this has only been tested on macOS YMMV
+- *Minimum* hardware recommendations: 4-core CPU, 8GB RAM (basic)
+
+1. Clone the repository and navigate into the folder:
+
 ```bash
 git clone <repo-url>
 cd resume_project
@@ -56,6 +66,9 @@ brew install pandoc
 - Run `ollama serve` in one terminal window
 
 ---
+
+### Other Helpful Information
+For more information on how to change elements of this for your own use(s), head over to the [FAQs page](FAQs.md).
 
 ## Prepare your resume + focus areas
 
@@ -100,15 +113,6 @@ output/<Organization>/<First_Last_FocusArea_JobTitle>.docx
 ## Credits
 Built with ChatGPT, Streamlit, Ollama, Pandoc, and Jinja2.
 
-## Cheatsheet
-
-### Change Model
-In `render_resume.py`:
-
-```python
-json={'model': 'llama3:8b', 'prompt': prompt}
-```
-Replace `'llama3:8b'` with `'mistral:7b'`, `'nous-hermes-2-mixtral'`, etc.
 
 ---
 

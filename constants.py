@@ -1,4 +1,5 @@
 # constants.py
+
 '''
 Constants and configurations for the resume LLM application.
 
@@ -6,6 +7,7 @@ PROTECTED_KEYS: List of keys in the resume JSON that should not be modified by t
 MODEL_NAME: The name of the LLM model to use for generating resume updates.
 STOPWORDS: Set of common words to filter out during keyword extraction.
 '''
+
 # ---- Constants/Keywords ----
 # These sections of the resume are protected and should not be modified by the LLM.
 # They will be merged back into the final resume after LLM processing.

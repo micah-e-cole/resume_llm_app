@@ -1,9 +1,15 @@
 # styler.py
+
+# import necessary libraries
 import json
 from docx import Document
 from docx.shared import Pt, RGBColor
 
 def apply_styles_to_docx(docx_path, json_path, output_path):
+    '''
+    Apply styles to a DOCX file based on a JSON configuration.
+    The JSON should contain style definitions for the document.
+    '''
     doc = Document(docx_path)
     with open(json_path, 'r') as f:
         styles_config = json.load(f)
