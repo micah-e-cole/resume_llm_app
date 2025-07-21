@@ -1,11 +1,28 @@
+'''Author: Micah Braun
+Date: 2025-07-19
+Version: 1.2
+
+Description:
+Streamlit app to tailor resumes using a local LLM server (Ollama: llama3:8b),
+handling streaming JSON responses and protecting fixed personal sections.
+Outputs are saved as Markdown, PDF, and DOCX.
+
+Improvements:
+- LLM stream handling
+- JSON cleaning and extraction fixes
+- ATS-optimized LLM prompting
+- Keyword extraction + match check
+- DOCX styling with custom styles
+
+
+'''
+# import necessary libraries
 import streamlit as st
 import json
 import os
 from llm_client import get_updated_resume_json, extract_keywords, check_pandoc_engine
 from file_utils import load_json, save_file, convert_to_pdf, convert_to_docx, apply_docx_styles, generate_diff
-
-# ---- Constants ----
-PROTECTED_KEYS = ["education", "certificates"]
+from constants import PROTECTED_KEYS
 
 # ---- Setup ----
 os.makedirs('resumes', exist_ok=True)
