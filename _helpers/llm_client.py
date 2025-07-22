@@ -4,7 +4,7 @@
 import requests
 import json
 import re
-from constants import STOPWORDS, MODEL_NAME, PROTECTED_KEYS
+from .constants import STOPWORDS, MODEL_NAME, PROTECTED_KEYS
 
 def separate_protected_sections(data):
     '''
@@ -89,7 +89,7 @@ def get_updated_resume_json(resume_core, job_desc, sections, protected_keys):
     job description, and sections to update.
     Returns the updated JSON and the raw LLM response text.
     '''
-    llm_input, _ = separate_protected_sections(resume_core, protected_keys)
+    llm_input, _ = separate_protected_sections(resume_core)
     # Prepare the prompt for the LLM
     # This includes the core resume data, job description, and sections to update.
     # Prompt message sent to the model

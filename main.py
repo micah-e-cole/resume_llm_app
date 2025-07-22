@@ -7,13 +7,6 @@ Streamlit app to tailor resumes using a local LLM server (Ollama: llama3:8b),
 handling streaming JSON responses and protecting fixed personal sections.
 Outputs are saved as Markdown, PDF, and DOCX.
 
-Improvements:
-- LLM stream handling
-- JSON cleaning and extraction fixes
-- ATS-optimized LLM prompting
-- Keyword extraction + match check
-- DOCX styling with custom styles
-
 Files included:
 - main.py: Streamlit app logic
 - llm_client.py: LLM interaction and JSON handling
@@ -23,13 +16,50 @@ Files included:
 '''
 # import necessary libraries
 import streamlit as st
+import nltk
+from nltk.data import find
 import json
 import os
-from llm_client import get_updated_resume_json, extract_keywords, check_pandoc_engine
-from file_utils import load_json, save_file, convert_to_pdf, convert_to_docx, apply_docx_styles, generate_diff
-from constants import PROTECTED_KEYS
+
+from _helpers.llm_client import get_updated_resume_json, extract_keywords, check_pandoc_engine
+from _helpers.file_utils import load_json, save_file, convert_to_pdf, convert_to_docx, apply_docx_styles, generate_diff
+from _helpers.constants import PROTECTED_KEYS
+from _helpers.lemmatize import lemmatize_text, match_keywords_with_synonyms, rank_matched_keywords_by_tfidf
+
 
 # ---- Setup ----
+# Check for nltk resources (with CLI and Streamlit feedback)
+def ensure_nltk_resources():
+    '''
+    Ensure NLTK resources are available.
+    Downloads required corpora if missing.
+    Provides feedback in CLI and Streamlit.
+    '''
+    import sys
+    resources = ['punkt', 'wordnet', 'omw-1.4']
+    for resource in resources:
+        try:
+            if resource == 'punkt':
+                nltk.data.find(f'tokenizers/{resource}')
+            else:
+                nltk.data.find(f'corpora/{resource}')
+            print(f"NLTK resource '{resource}' already installed.")
+            st.info(f"NLTK resource '{resource}' is ready.")
+        except LookupError:
+            print(f"Downloading NLTK resource '{resource}'...")
+            st.info(f"Downloading NLTK resource '{resource}'...")
+            try:
+                nltk.download(resource, quiet=True)
+                print(f"Successfully downloaded '{resource}'.")
+                st.info(f"Successfully downloaded '{resource}'.")
+            except Exception as e:
+                print(f"Failed to download NLTK resource '{resource}': {e}")
+                st.error(f"Failed to download NLTK resource '{resource}': {e}")
+                sys.exit(1)
+    print("All NLTK resources are ready.")
+    # st.info("All NLTK resources are ready.")
+    status.write(f"Downloading NLTK resource '{resource}'...")
+
 # Ensure necessary directories exist
 os.makedirs('resumes', exist_ok=True)
 # Ensure output directory exists for generated files
@@ -40,6 +70,12 @@ os.makedirs('output', exist_ok=True)
 # This includes the title and layout of the app.
 st.set_page_config(page_title="Resume Tailoring App", layout="wide")
 st.title("Resume Tailoring App")
+
+# Show NLTK status right away on app load
+with st.status("Checking NLTK resources...", expanded=True) as status:
+    ensure_nltk_resources()
+    status.update(label="✅ NLTK resources ready.", state="complete")
+
 # Display a brief description of the app
 st.markdown("""
 Paste a job description, select sections to update, and generate a tailored resume.

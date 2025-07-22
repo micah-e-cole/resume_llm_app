@@ -5,7 +5,7 @@ import json
 import os
 import difflib
 import pypandoc
-from styler import apply_styles_to_docx
+from .styler import apply_styles_to_docx
 
 def load_json(filepath):
     '''

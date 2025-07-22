@@ -2,3 +2,4 @@ streamlit
 jinja2
 pypandoc
 requests
+nltk
