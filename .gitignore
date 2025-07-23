@@ -20,3 +20,5 @@ Makefile
 .streamlit/
 # Ignore Personal JSON
 personal_info.json
+# Ignore unittests
+tests/
