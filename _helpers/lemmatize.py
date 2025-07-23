@@ -1,18 +1,64 @@
 # _helpers/lemmatize.py
 
 import nltk
+import os
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.data import find
 
-# Initialize the lemmatizer
+
+def ensure_nltk_resources():
+    """
+    Ensure required NLTK resources are downloaded to the venv/nltk_data folder.
+    """
+    venv_base = os.path.dirname(os.path.dirname(nltk.__file__))
+    nltk_data_dir = os.path.join(venv_base, 'nltk_data')
+
+    if not os.path.exists(nltk_data_dir):
+        os.makedirs(nltk_data_dir)
+        print(f"Created nltk_data directory at {nltk_data_dir}")
+
+    if nltk_data_dir not in nltk.data.path:
+        nltk.data.path.insert(0, nltk_data_dir)
+
+    resources = [
+        'punkt',
+        'wordnet',
+        'omw-1.4',
+        'averaged_perceptron_tagger',
+        'averaged_perceptron_tagger_eng'  # ✅ NEW: required by nltk.pos_tag(lang="eng")
+    ]
+
+    for resource in resources:
+        try:
+            if resource == 'punkt':
+                nltk.data.find(f'tokenizers/{resource}')
+            elif 'tagger' in resource:
+                nltk.data.find(f'taggers/{resource}')
+            else:
+                nltk.data.find(f'corpora/{resource}')
+            print(f"NLTK resource '{resource}' already installed in venv.")
+        except LookupError:
+            print(f"Downloading NLTK resource '{resource}' to {nltk_data_dir}...")
+            nltk.download(resource, download_dir=nltk_data_dir)
+    print("All required NLTK resources are ready.")
+
+def patched_pos_tag(tokens):
+    try:
+        nltk.data.find('taggers/averaged_perceptron_tagger')
+    except LookupError:
+        nltk.download('averaged_perceptron_tagger')
+    return nltk.pos_tag(tokens)
+
+
 lemmatizer = WordNetLemmatizer()
 
-# Helper: map NLTK POS tags to WordNet POS tags
+
 def get_wordnet_pos(tag):
     """
-    Convert NLTK POS tags to WordNet POS tags for more accurate lemmatization.
+    Map NLTK POS tag to WordNet POS tag.
     """
     if tag.startswith('J'):
         return wordnet.ADJ
@@ -23,23 +69,23 @@ def get_wordnet_pos(tag):
     elif tag.startswith('R'):
         return wordnet.ADV
     else:
-        return wordnet.NOUN  # default fallback
+        return wordnet.NOUN
 
-# Lemmatize a single text string into a list of base words
+
 def lemmatize_text(text):
     """
-    Lemmatize the input text using WordNetLemmatizer and POS tagging.
+    Lemmatize the input text using WordNetLemmatizer and patched POS tagging.
     Returns a list of lemmas (base words).
     """
     tokens = word_tokenize(text.lower())
-    pos_tags = nltk.pos_tag(tokens)
+    pos_tags = patched_pos_tag(tokens)
     lemmas = [lemmatizer.lemmatize(token, get_wordnet_pos(pos)) for token, pos in pos_tags]
     return lemmas
 
-# Get synonyms for a given word using WordNet
+
 def get_synonyms(word):
     """
-    Return a set of synonyms for a word from WordNet.
+    Get WordNet synonyms for a word.
     """
     synonyms = set()
     for syn in wordnet.synsets(word):
@@ -47,11 +93,10 @@ def get_synonyms(word):
             synonyms.add(lemma.name().lower().replace('_', ' '))
     return synonyms
 
-# Compute TF-IDF scores for each document in a list of texts
+
 def compute_tfidf_scores(texts):
     """
-    Input: texts (list of strings)
-    Output: list of dictionaries with {word: tfidf_score}
+    Compute TF-IDF scores for a list of documents.
     """
     vectorizer = TfidfVectorizer()
     X = vectorizer.fit_transform(texts)
@@ -62,33 +107,23 @@ def compute_tfidf_scores(texts):
         scores_list.append(scores)
     return scores_list
 
-# Match keywords between job description and resume using lemmatization + synonyms
+
 def match_keywords_with_synonyms(job_desc, resume_text):
     """
-    Match keywords between job description and resume text.
-    Uses lemmatization and synonyms to find overlapping words.
-    Returns a list of matched keywords.
+    Match keywords between job description and resume using lemmatization and synonyms.
     """
     job_lems = set(lemmatize_text(job_desc))
     resume_lems = set(lemmatize_text(resume_text))
-
-    # Expand job description lemmas with synonyms
     expanded_job = job_lems.copy()
     for word in job_lems:
         expanded_job.update(get_synonyms(word))
-
-    # Find overlap between expanded job lemmas and resume lemmas
     matched = expanded_job.intersection(resume_lems)
     return list(matched)
 
-# Rank matched keywords by average TF-IDF score across both texts
+
 def rank_matched_keywords_by_tfidf(matched_keywords, texts):
     """
-    Input:
-        matched_keywords: list of matched words
-        texts: [job_desc, resume_text]
-    Output:
-        sorted list of (word, avg_tfidf_score)
+    Rank matched keywords by average TF-IDF score.
     """
     scores_list = compute_tfidf_scores(texts)
     combined_scores = {}
@@ -97,6 +132,5 @@ def rank_matched_keywords_by_tfidf(matched_keywords, texts):
         score_resume = scores_list[1].get(word, 0)
         avg_score = (score_job + score_resume) / 2
         combined_scores[word] = avg_score
-
     sorted_ranked = sorted(combined_scores.items(), key=lambda x: x[1], reverse=True)
     return sorted_ranked
