@@ -16,12 +16,6 @@
 {% endfor %}
 {% endfor %}
 
-## Earlier Work Experience
-{% for exp in other_experience %}
-### {{ exp.title }} at {{ exp.company }} ({{ exp.years }})
-- {{ exp.description }}
-{% endfor %}
-
 ## Volunteer Experience
 {% for vol in volunteer_experience %}
 ### {{ vol.title }} at {{ vol.company }} ({{ vol.years }})

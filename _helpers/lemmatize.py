@@ -2,48 +2,13 @@
 
 import nltk
 import os
+import string
+from .constants import STOPWORDS
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.data import find
-
-
-def ensure_nltk_resources():
-    """
-    Ensure required NLTK resources are downloaded to the venv/nltk_data folder.
-    """
-    venv_base = os.path.dirname(os.path.dirname(nltk.__file__))
-    nltk_data_dir = os.path.join(venv_base, 'nltk_data')
-
-    if not os.path.exists(nltk_data_dir):
-        os.makedirs(nltk_data_dir)
-        print(f"Created nltk_data directory at {nltk_data_dir}")
-
-    if nltk_data_dir not in nltk.data.path:
-        nltk.data.path.insert(0, nltk_data_dir)
-
-    resources = [
-        'punkt',
-        'wordnet',
-        'omw-1.4',
-        'averaged_perceptron_tagger',
-        'averaged_perceptron_tagger_eng'  # ✅ NEW: required by nltk.pos_tag(lang="eng")
-    ]
-
-    for resource in resources:
-        try:
-            if resource == 'punkt':
-                nltk.data.find(f'tokenizers/{resource}')
-            elif 'tagger' in resource:
-                nltk.data.find(f'taggers/{resource}')
-            else:
-                nltk.data.find(f'corpora/{resource}')
-            print(f"NLTK resource '{resource}' already installed in venv.")
-        except LookupError:
-            print(f"Downloading NLTK resource '{resource}' to {nltk_data_dir}...")
-            nltk.download(resource, download_dir=nltk_data_dir)
-    print("All required NLTK resources are ready.")
 
 def patched_pos_tag(tokens):
     try:
@@ -52,9 +17,7 @@ def patched_pos_tag(tokens):
         nltk.download('averaged_perceptron_tagger')
     return nltk.pos_tag(tokens)
 
-
 lemmatizer = WordNetLemmatizer()
-
 
 def get_wordnet_pos(tag):
     """
@@ -71,17 +34,23 @@ def get_wordnet_pos(tag):
     else:
         return wordnet.NOUN
 
-
 def lemmatize_text(text):
     """
     Lemmatize the input text using WordNetLemmatizer and patched POS tagging.
-    Returns a list of lemmas (base words).
+    Filters out stopwords and punctuation.
+    Returns a list of clean lemmas (base words).
     """
     tokens = word_tokenize(text.lower())
+    # Remove punctuation and stopwords
+    tokens = [t for t in tokens if t not in STOPWORDS and t not in string.punctuation]
+    
     pos_tags = patched_pos_tag(tokens)
-    lemmas = [lemmatizer.lemmatize(token, get_wordnet_pos(pos)) for token, pos in pos_tags]
+    lemmas = [
+        lemmatizer.lemmatize(token, get_wordnet_pos(pos))
+        for token, pos in pos_tags
+        if token not in STOPWORDS and token not in string.punctuation
+    ]
     return lemmas
-
 
 def get_synonyms(word):
     """
@@ -92,7 +61,6 @@ def get_synonyms(word):
         for lemma in syn.lemmas():
             synonyms.add(lemma.name().lower().replace('_', ' '))
     return synonyms
-
 
 def compute_tfidf_scores(texts):
     """
@@ -107,7 +75,6 @@ def compute_tfidf_scores(texts):
         scores_list.append(scores)
     return scores_list
 
-
 def match_keywords_with_synonyms(job_desc, resume_text):
     """
     Match keywords between job description and resume using lemmatization and synonyms.
@@ -119,7 +86,6 @@ def match_keywords_with_synonyms(job_desc, resume_text):
         expanded_job.update(get_synonyms(word))
     matched = expanded_job.intersection(resume_lems)
     return list(matched)
-
 
 def rank_matched_keywords_by_tfidf(matched_keywords, texts):
     """
