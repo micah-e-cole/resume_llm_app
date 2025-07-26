@@ -11,13 +11,9 @@
 ## Work Experience
 {% for job in work_experience %}
 ### {{ job.title }} at {{ job.company }} ({{ job.years }})
-- {{ job.description }}
+{% for bullet in job.description %}
+- {{ bullet }}
 {% endfor %}
-
-## Earlier Work Experience
-{% for exp in other_experience %}
-### {{ exp.title }} at {{ exp.company }} ({{ exp.years }})
-- {{ exp.description }}
 {% endfor %}
 
 ## Volunteer Experience
