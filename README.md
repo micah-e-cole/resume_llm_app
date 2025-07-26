@@ -9,23 +9,24 @@ This project is a Streamlit web app that:
 ### Folder Structure
 ```
 resume_project/
-├── main.py                           # Main Streamlit app script
-├── file_utils.py                     # Contains helper functions for handling text functions in main.py
-├── llm_client.py                     # Contains the helper functions for interacting with and prompting the LLM
-├── constants.py                      # Contains the constants used throughout the files
-├── styler.py                         # Contains the .DOCX file formatting that Pandoc will use in .DOCX conversion
-├── resume_template.md                # Jinja2 Markdown template for rendering resumes
-├── requirements.txt                  # Python dependencies
-├── README.md                         # Project README for GitHub
-├── my-reference.docx                 # Reference template for .docx file types (customize font/styles)
-├── styles.json                       # Style formatting to be used by Python's python-docx
-├── Makefile (optional)               # Optional CLI helper for common commands
-├── resumes/                          # Folder holding base resumes for each focus area (customize)
+├── main.py 
+├── _helpers/
+│   ├── file_utils.py                     # Contains helper functions for handling text functions in main.py
+│   ├── llm_client.py                     # Contains the helper functions for interacting with and prompting the LLM
+│   ├── constants.py                      # Contains the constants used throughout the files
+│   └── styler.py                         # Contains the .DOCX file formatting that Pandoc will use in .DOCX conversion
+├── resume_template.md                    # Jinja2 Markdown template for rendering resumes
+├── requirements.txt                      # Python dependencies
+├── README.md                             # Project README for GitHub
+├── my-reference.docx                     # Reference template for .docx file types (customize font/styles)
+├── styles.json                           # Style formatting to be used by Python's python-docx
+├── Makefile (optional)                   # Optional CLI helper for common commands
+├── resumes/                              # Folder holding base resumes for each focus area (customize)
 │   ├── it_resume.json                    # Base resumes for IT roles
 │   ├── software_development_resume.json  # Base resume for Software Development roles
 │   └── security_resume.json              # Base resume for Security roles
-└── output/                           # Folder where generated files are saved
-    └── <Organization>/               # Folder for each organization/job application (e.g., Google)
+└── output/                                     # Folder where generated files are saved
+    └── <Organization>/                         # Folder for each organization/job application (e.g., Google)
         ├── First_Last_FocusArea_JobTitle.md    # Rendered Markdown resume
         ├── First_Last_FocusArea_JobTitle.pdf   # Generated PDF resume
         └── First_Last_FocusArea_JobTitle.docx  # Generated DOCX resume
